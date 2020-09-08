@@ -32,16 +32,23 @@
     </style>
 </head>
 <body>
+    <!-- ontouchstart - в момент касания сенсорной поверхности запускает функцию "p1handleTouchStart(event)" и передает (event - параметры события)-->
+    <!-- ontouchmove - при перемещении по сенсорной поверхности запускает функцию "p1handleTouchMove(event)" и передает (event - параметры события)-->
+    <!-- ontouchend - если убрали палец з сенсора то запускаем функцию "p1handleTouchEnd(event)" и передает (event - параметры события)-->
     <div class="page1"
         id="page1"
         ontouchstart="p1handleTouchStart(event)"
         ontouchmove="p1handleTouchMove(event)"
-        ontouchend="p1handleTouchEnd(event)"><span class="center">Page 1</span></div>
+        ontouchend="p1handleTouchEnd(event)">
+        <span class="center">Page 1</span>
+    </div>
     <div class="page2"
         id="page2"
         ontouchstart="p2handleTouchStart(event)"
         ontouchmove="p2handleTouchMove(event)"
-        ontouchend="p2handleTouchEnd(event)"><span class="center">Page 2</span></div>
+        ontouchend="p2handleTouchEnd(event)">
+        <span class="center">Page 2</span>
+    </div>
 </body>
 <script>
     const p1 = document.getElementById('page1');
@@ -49,11 +56,14 @@
 
     let startingX;
 
+    //записывает кординаты касания сенсора по Х в переменною "startingX"
     function p1handleTouchStart(evt) {
         startingX = evt.touches[0].clientX;
         // console.log(startingX);
+        // console.log(evt);
     }
 
+    //сдвигаем елемент в лево или выходим
     function p1handleTouchMove(evt) {
         const touch = evt.touches[0];
         const change = startingX - touch.clientX;
@@ -63,21 +73,24 @@
         p1.style.left = '-' + change + 'px';
         p2.style.display = 'block';
         p2.style.left = (screen.width - change) + 'px';
+        // console.log(screen.width);
         evt.preventDefault();
         // console.log(change);
         // console.log(touch.clientX);
     };
 
+     //пры условии условиии здвигаем елементы в ливо
     function p1handleTouchEnd(evt) {
         const change = startingX - evt.changedTouches[0].clientX;
-        const threshold = screen.width / 3;
+        // console.log(change);
+        const threshold = screen.width / 5;
         if (change < threshold) {
             p1.style.left = '0';
             p2.style.left = '100%';
             p2.style.display = 'none';
         } else {
-        p1.style.transition = 'all .3s';
-        p1.style.transition = 'all .3s';
+        p1.style.transition = 'all .2s';
+        p2.style.transition = 'all .2s';
         p2.style.left = '-100%';
         p2.style.left = '0';
         p2.style.display = 'block';
@@ -87,14 +100,14 @@
     // ====================================
     function p2handleTouchStart(evt) {
         startingX = evt.touches[0].clientX;
-        p1.style.transition = '';
-        p2.style.transition = '';
         p1.style.display = 'none';
     }
 
     function p2handleTouchMove(evt) {
         const touch = evt.touches[0];
         const change = touch.clientX - startingX;
+        // console.log(change);
+        // console.log(touch.clientX);
         if (change < 0) {
             return;
         }
@@ -106,7 +119,7 @@
 
     function p2handleTouchEnd(evt) {
         const change = evt.changedTouches[0].clientX - startingX;
-        const half = screen.width / 4;
+        const half = screen.width / 5;
         if (change < half) {
             p1.style.left = '-100%';
             p1.style.display = 'none';
